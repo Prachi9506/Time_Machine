@@ -220,10 +220,10 @@ export default function CreateCapsuleDialog({
             />
           </div>
 
-          <div className="flex items-center justify-between">
+          {/* <div className="flex items-center justify-between">
             <Label className="text-foreground/80">Make public after unlock</Label>
             <Switch checked={isPublic} onCheckedChange={setIsPublic} />
-          </div>
+          </div> */}
 
           <Button type="submit" className="w-full font-display" disabled={loading}>
             {loading ? "Sealing..." : "Seal Capsule 🔒"}
@@ -233,3 +233,4 @@ export default function CreateCapsuleDialog({
     </Dialog>
   );
 }
+
