@@ -1,28 +1,39 @@
-⏳ Digital Time Machine⏳
-Digital Time Machine is a web-based "time capsule" application that allows users to write messages to themselves or their friends to be unlocked at a specific future date.
+# ⏳ Digital Time Machine
 
-✨ Features
-Time-Locked Messages: Create capsules with titles and detailed messages that remain sealed until a chosen unlock date.
+**Digital Time Machine** is a web-based **time capsule application** that allows users to write messages to themselves or their friends and unlock them at a specific future date. It helps preserve thoughts, memories, and emotions for meaningful future experiences.
 
-Social Connectivity: Connect with friends through a search and request system to send them future messages.
+---
 
-Vault Security: Messages are securely stored and cannot be peeked at or edited before the unlock date.
+## ✨ Features
 
-Dynamic Dashboard: Manage incoming and outgoing capsules, track countdowns, and handle friend requests in a unified interface.
+### 🔒 Time-Locked Messages
+- Create digital capsules with a **title and detailed message**
+- Capsules remain **sealed until the selected unlock date**
+- Messages automatically unlock when the countdown reaches zero
 
-Real-time Updates: Stay notified of new capsules and friend activity through Supabase real-time subscriptions.
+### 👥 Social Connectivity
+- Connect with friends using a **search and friend request system**
+- Send **future messages** to friends
+- Manage and accept incoming friend requests
 
-Emotional Intensity: Rate the emotional weight of your capsules from 1 to 10 for more impactful reveals.
+### 🛡 Vault Security
+- Capsules are **securely stored**
+- Messages **cannot be viewed or edited** before the unlock date
+- Ensures authenticity and surprise at unlock time
 
-🚀 Tech Stack
-Frontend: React 18, Vite, TypeScript.
+### 📊 Dynamic Dashboard
+- Manage **incoming and outgoing capsules**
+- Track **unlock countdown timers**
+- View capsule status in one unified interface
+- Handle friend requests easily
 
-Styling: Tailwind CSS, Framer Motion (for animations), and Shadcn UI components.
+### ⚡ Real-time Updates
+- Receive instant updates for:
+  - New capsules
+  - Friend requests
+  - Capsule unlocks
+- Powered by **Supabase Real-time subscriptions**
 
-Backend/Database: Supabase (Auth, Database, and Real-time).
+---
 
-State Management: TanStack Query (React Query).
-
-Forms: React Hook Form & Zod.
-
-Time Machine. The future is waiting.
+## ⏰ Time Machine — The Future is Waiting.
