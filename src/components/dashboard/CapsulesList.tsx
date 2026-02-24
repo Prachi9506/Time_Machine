@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
 import { Clock, Unlock, Lock, Sparkles } from "lucide-react";
-import { format, formatDistanceToNow, isPast } from "date-fns";
+import { formatDistanceToNow, isPast } from "date-fns";
 import CapsuleReveal from "./CapsuleReveal";
 
 interface Capsule {
@@ -166,7 +166,15 @@ export default function CapsulesList({ userId }: { userId: string }) {
                       </p>
                     </div>
                     <p className="text-[9px] text-muted-foreground text-center uppercase tracking-widest opacity-60">
-                      {format(new Date(capsule.unlock_date), "MMM d, yyyy h:mm a")}
+                      {new Intl.DateTimeFormat('en-IN', {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric',
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        hour12: true,
+                        timeZone: 'Asia/Kolkata'
+                      }).format(new Date(capsule.unlock_date))} IST
                     </p>
                   </div>
                 </motion.div>
