@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Slider } from "@/components/ui/slider";
-import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Sparkles, Clock } from "lucide-react";
@@ -28,7 +27,7 @@ export default function CreateCapsuleDialog({
 }) {
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
-  const [unlockDate, setUnlockDate] = useState("");
+  const [unlockDateTime, setUnlockDateTime] = useState("");
   const [intensity, setIntensity] = useState([5]);
   const [recipientType, setRecipientType] = useState<"self" | "friend">("self");
   const [selectedFriend, setSelectedFriend] = useState("");
@@ -64,8 +63,15 @@ export default function CreateCapsuleDialog({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim() || !message.trim() || !unlockDate) {
+    
+    if (!title.trim() || !message.trim() || !unlockDateTime) {
       toast({ title: "Missing fields", description: "Please fill all required fields.", variant: "destructive" });
+      return;
+    }
+
+    const unlockDateObj = new Date(unlockDateTime);
+    if (unlockDateObj <= new Date()) {
+      toast({ title: "Invalid time", description: "The unlock time must be in the future.", variant: "destructive" });
       return;
     }
 
@@ -82,14 +88,13 @@ export default function CreateCapsuleDialog({
         recipient_id: recipientId,
         title: title.trim(),
         message: message.trim(),
-        unlock_date: new Date(unlockDate).toISOString(),
+        unlock_date: unlockDateObj.toISOString(),
         emotional_intensity: intensity[0],
         is_public: isPublic,
       });
 
       if (error) throw error;
 
-      // Send notification to recipient if it's a friend
       if (recipientType === "friend" && recipientId !== userId) {
         await supabase.from("notifications").insert({
           user_id: recipientId,
@@ -103,7 +108,7 @@ export default function CreateCapsuleDialog({
       onOpenChange(false);
       setTitle("");
       setMessage("");
-      setUnlockDate("");
+      setUnlockDateTime("");
       setIntensity([5]);
       setRecipientType("self");
       setSelectedFriend("");
@@ -115,9 +120,9 @@ export default function CreateCapsuleDialog({
     }
   };
 
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  const minDate = tomorrow.toISOString().split("T")[0];
+  // Generate local datetime string for 'min' attribute: YYYY-MM-DDTHH:mm
+  const now = new Date();
+  const minDateTime = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}T${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -155,13 +160,13 @@ export default function CreateCapsuleDialog({
 
           <div className="space-y-2">
             <Label className="text-foreground/80 flex items-center gap-2">
-              <Clock className="w-4 h-4" /> Unlock Date
+              <Clock className="w-4 h-4" /> Unlock Date & Time
             </Label>
             <Input
-              type="date"
-              value={unlockDate}
-              onChange={(e) => setUnlockDate(e.target.value)}
-              min={minDate}
+              type="datetime-local"
+              value={unlockDateTime}
+              onChange={(e) => setUnlockDateTime(e.target.value)}
+              min={minDateTime}
               className="bg-muted/50 border-border/50"
               required
             />
@@ -220,11 +225,6 @@ export default function CreateCapsuleDialog({
             />
           </div>
 
-          {/* <div className="flex items-center justify-between">
-            <Label className="text-foreground/80">Make public after unlock</Label>
-            <Switch checked={isPublic} onCheckedChange={setIsPublic} />
-          </div> */}
-
           <Button type="submit" className="w-full font-display" disabled={loading}>
             {loading ? "Sealing..." : "Seal Capsule 🔒"}
           </Button>
@@ -233,4 +233,3 @@ export default function CreateCapsuleDialog({
     </Dialog>
   );
 }
-
